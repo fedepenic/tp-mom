@@ -2,8 +2,8 @@ SHELL := /bin/bash
 PWD := $(shell pwd)
 
 up:
-	COMPOSE_HTTP_TIMEOUT=300 docker compose -f docker-compose.yaml up --build --remove-orphans --detach
-	docker compose -f docker-compose.yaml logs --follow go-tests
+	COMPOSE_HTTP_TIMEOUT=300 docker-compose -f docker-compose.yaml up --build --remove-orphans --detach
+	docker-compose -f docker-compose.yaml logs --follow go-tests
 .PHONY: up
 
 local:
@@ -12,10 +12,10 @@ local:
 .PHONY: local
 
 down:
-	docker compose -f docker-compose.yaml stop -t 1
-	docker compose -f docker-compose.yaml down
+	docker-compose -f docker-compose.yaml stop -t 1
+	docker-compose -f docker-compose.yaml down
 .PHONY: down
 
 logs:
-	docker compose -f docker-compose.yaml logs
+	docker-compose -f docker-compose.yaml logs
 .PHONY: logs
