@@ -82,12 +82,13 @@ func (qm *QueueMiddleware) StartConsuming(callbackFunc func(msg m.Message, ack f
 	}
 }
 
-func (qm *QueueMiddleware) StopConsuming() {
+func (qm *QueueMiddleware) StopConsuming() error {
 	select {
 	case <-qm.stopCh:
 	default:
 		close(qm.stopCh)
 	}
+	return nil
 }
 
 func (qm *QueueMiddleware) Send(msg m.Message) error {

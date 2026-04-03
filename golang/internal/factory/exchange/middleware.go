@@ -108,12 +108,13 @@ func (em *ExchangeMiddleware) StartConsuming(callbackFunc func(msg m.Message, ac
 	}
 }
 
-func (em *ExchangeMiddleware) StopConsuming() {
+func (em *ExchangeMiddleware) StopConsuming() error {
 	select {
 	case <-em.stopCh:
 	default:
 		close(em.stopCh)
 	}
+	return nil
 }
 
 func (em *ExchangeMiddleware) Send(msg m.Message) error {
