@@ -121,18 +121,20 @@ func (em *ExchangeMiddleware) Send(msg m.Message) error {
 	if len(em.keys) == 0 {
 		return m.ErrMessageMiddlewareMessage
 	}
-	if err := em.ch.PublishWithContext(
-		context.Background(),
-		em.exchange,
-		em.keys[0],
-		false,
-		false,
-		amqp.Publishing{
-			ContentType: "text/plain",
-			Body:        []byte(msg.Body),
-		},
-	); err != nil {
-		return fmt.Errorf("%w: %v", m.ErrMessageMiddlewareMessage, err)
+	for _, key := range em.keys {
+		if err := em.ch.PublishWithContext(
+			context.Background(),
+			em.exchange,
+			key,
+			false,
+			false,
+			amqp.Publishing{
+				ContentType: "text/plain",
+				Body:        []byte(msg.Body),
+			},
+		); err != nil {
+			return fmt.Errorf("%w: %v", m.ErrMessageMiddlewareMessage, err)
+		}
 	}
 	return nil
 }
